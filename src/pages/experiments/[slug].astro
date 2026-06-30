@@ -1,0 +1,134 @@
+---
+import { render } from "astro:content";
+import BaseLayout from "@/components/layout/BaseLayout.astro";
+import Section from "@/components/ui/Section.astro";
+import Tags from "@/components/ui/Tags.astro";
+import StatusBadge from "@/components/ui/StatusBadge.astro";
+import { getPublishedExperiments } from "@/lib/experiments";
+
+export async function getStaticPaths() {
+  const experiments = await getPublishedExperiments();
+  return experiments.map((experiment) => ({
+    params: { slug: experiment.id },
+    props: { experiment },
+  }));
+}
+
+const { experiment } = Astro.props;
+const { Content } = await render(experiment);
+const { title, description, status, tags, github, external } = experiment.data;
+---
+
+<BaseLayout title={`${title} · Labs`} description={description}>
+  <Section prose>
+    <article>
+      <header class="head">
+        <p class="meta">
+          <a class="up" href="/">← Labs</a>
+          <StatusBadge status={status} />
+        </p>
+        <h1>{title}</h1>
+        <p class="lede">{description}</p>
+        <Tags tags={tags} />
+        {
+          (external || github) && (
+            <p class="links">
+              {external && (
+                <a href={external} rel="noopener">
+                  Voir la démo
+                </a>
+              )}
+              {github && (
+                <a href={github} rel="noopener">
+                  Code source
+                </a>
+              )}
+            </p>
+          )
+        }
+      </header>
+
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+  </Section>
+</BaseLayout>
+
+<style>
+  .head {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+
+  .up {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    transition: color var(--transition-base);
+  }
+
+  .up:hover {
+    color: var(--color-accent);
+  }
+
+  .lede {
+    margin: var(--space-md) 0;
+    color: var(--color-text-muted);
+    font-size: 1.125rem;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+  }
+
+  .links a {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--color-accent);
+  }
+
+  /* MDX content is injected by <Content />, so descendants are global. */
+  .prose :global(h2) {
+    margin-top: var(--space-2xl);
+    margin-bottom: var(--space-sm);
+    font-size: 1.5rem;
+  }
+
+  .prose :global(h3) {
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-xs);
+    font-size: 1.2rem;
+  }
+
+  .prose :global(p),
+  .prose :global(ul) {
+    margin-bottom: var(--space-md);
+  }
+
+  .prose :global(ul) {
+    padding-left: var(--space-lg);
+    list-style: disc;
+  }
+
+  .prose :global(a) {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--color-accent2);
+  }
+</style>

@@ -1,0 +1,32 @@
+---
+// Layout primitive: vertical rhythm plus a centered, gutter-padded container.
+// `prose` narrows the inner column to the reading width.
+interface Props {
+  prose?: boolean;
+  class?: string;
+}
+
+const { prose = false, class: className } = Astro.props;
+---
+
+<section class:list={["section", className]}>
+  <div class:list={["inner", { prose }]}>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: var(--space-4xl);
+  }
+
+  .inner {
+    max-width: var(--maxw);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .inner.prose {
+    max-width: var(--maxw-prose);
+  }
+</style>

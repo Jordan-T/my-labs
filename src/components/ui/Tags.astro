@@ -1,0 +1,63 @@
+---
+// Minimal tags: border + text, transparent background, one colour per type.
+// Colours come from the generated --tag-* tokens (see design-system.md).
+export type TagType = "framework" | "language" | "tool" | "concept";
+
+export interface Tag {
+  label: string;
+  type: TagType;
+}
+
+interface Props {
+  tags: Tag[];
+}
+
+const { tags } = Astro.props;
+---
+
+{
+  tags.length > 0 && (
+    <ul class="tags" aria-label="Technologies">
+      {tags.map((tag) => (
+        <li class:list={["tag", `tag-${tag.type}`]}>{tag.label}</li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: var(--space-2xs) var(--space-xs);
+    border: var(--border-width) solid;
+    border-radius: var(--radius-sm);
+    background: transparent;
+  }
+
+  .tag-framework {
+    color: var(--tag-framework-c);
+    border-color: var(--tag-framework-b);
+  }
+
+  .tag-language {
+    color: var(--tag-language-c);
+    border-color: var(--tag-language-b);
+  }
+
+  .tag-tool {
+    color: var(--tag-tool-c);
+    border-color: var(--tag-tool-b);
+  }
+
+  .tag-concept {
+    color: var(--tag-concept-c);
+    border-color: var(--tag-concept-b);
+  }
+</style>

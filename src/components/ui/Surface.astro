@@ -1,0 +1,61 @@
+---
+// Shared bento surface primitive (elevation tier). Compose with it instead of
+// re-declaring borders/padding (scoped Astro styles have no `composes:`).
+// See ADR-0002 and .ai/context/design-system.md.
+type Tag = "div" | "article" | "a";
+
+interface Props {
+  as?: Tag;
+  href?: string;
+  class?: string;
+  /** Make the surface a positioned, clipped container that fills its parent
+      (e.g. for a card with an absolutely-positioned background image). */
+  fill?: boolean;
+}
+
+const {
+  as: Element = "div",
+  href,
+  class: className,
+  fill = false,
+}: Props = Astro.props;
+---
+
+<Element class:list={["surface", { "surface--fill": fill }, className]} href={href}>
+  <slot />
+</Element>
+
+<style>
+  .surface {
+    display: block;
+    padding: var(--space-xl);
+    background: var(--color-surface);
+    border: var(--border-width) solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    transition:
+      transform var(--transition-base),
+      border-color var(--transition-base),
+      background var(--transition-base);
+  }
+
+  .surface--fill {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .surface:hover {
+    border-color: var(--accent-edge);
+    background: var(--color-surface-raised);
+  }
+
+  .surface:focus-within {
+    outline: var(--border-width-accent) solid var(--color-accent);
+    outline-offset: var(--space-2xs);
+  }
+
+  a.surface:hover,
+  a.surface:focus-visible {
+    transform: translateY(-0.25rem);
+  }
+</style>

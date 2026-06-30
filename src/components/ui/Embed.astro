@@ -1,0 +1,30 @@
+---
+// Responsive, accessible iframe for experiments that embed an external demo.
+// A descriptive `title` is required (screen-reader label for the frame).
+interface Props {
+  src: string;
+  title: string;
+}
+
+const { src, title } = Astro.props;
+---
+
+<div class="embed">
+  <iframe src={src} title={title} loading="lazy" allowfullscreen></iframe>
+</div>
+
+<style>
+  .embed {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--color-surface);
+    border: var(--border-width) solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+  }
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+</style>

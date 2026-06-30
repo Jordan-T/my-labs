@@ -1,0 +1,12 @@
+/* ============================================================
+   Canonical breakpoints as custom media queries.
+
+   `@media (--mq-*)` is NOT native CSS yet (Media Queries Level 5,
+   not shipped in browsers): it is polyfilled at build time by
+   postcss-custom-media, and injected into every stylesheet via
+   @csstools/postcss-global-data. Define a breakpoint once here and
+   reuse it everywhere — never repeat a literal width in a @media.
+   ============================================================ */
+@custom-media --mq-grid (max-width: 900px); /* multi-column grid reflow */
+@custom-media --mq-ui (max-width: 720px); /* UI switch: burger menu, reduced gutter */
+@custom-media --mq-compact (max-width: 600px); /* compact mobile, grids → 1 col */

@@ -1,0 +1,4 @@
+# Pre-launch: the whole site is disallowed until it goes to production.
+# Do not relax this without an explicit request to go live.
+User-agent: *
+Disallow: /

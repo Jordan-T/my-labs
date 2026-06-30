@@ -1,0 +1,37 @@
+---
+title: "Animations pilotées par le scroll"
+description: "Explorer les animations scroll-driven en CSS pur, sans le moindre JavaScript ni librairie d'animation."
+date: "2026-05-10"
+status: "done"
+featured: false
+published: false
+tags:
+  - label: "CSS"
+    type: "language"
+  - label: "scroll-driven"
+    type: "concept"
+  - label: "Animation"
+    type: "concept"
+external: "https://developer.mozilla.org/fr/docs/Web/CSS/animation-timeline"
+---
+
+Une expérience courte pour valider jusqu'où on peut pousser les animations
+liées au scroll en CSS natif, sans JavaScript.
+
+## Le principe
+
+Les propriétés `animation-timeline`, `scroll()` et `view()` permettent de lier
+une animation à la progression du scroll plutôt qu'au temps. Le navigateur gère
+tout sur le compositeur, donc le thread principal reste libre et l'animation
+suit le doigt ou la molette sans à-coups.
+
+## Ce que j'en retiens
+
+Le support est désormais suffisant pour s'en servir en amélioration
+progressive : sans la fonctionnalité, le contenu reste lisible, et avec elle, il
+gagne une couche de mouvement gratuite côté performance. C'est exactement la
+philosophie de la maison : le mouvement vient de la plateforme, pas d'un budget
+JavaScript.
+
+Cette expérience n'a pas de visuel de couverture, pour voir comment la carte se
+comporte sans image.

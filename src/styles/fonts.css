@@ -1,0 +1,26 @@
+/* ============================================================
+   Typography — "Engineering & Blueprint" direction
+   Font files are loaded via @fontsource (JS imports in
+   src/components/layout/BaseLayout.astro). Here we map the family
+   names to semantic tokens consumed everywhere (never hardcode the
+   family name).
+   ============================================================ */
+:root {
+  --font-display: "Geist Sans", "Outfit", sans-serif; /* headings */
+  --font-body: "Inter Variable", "Inter", "DM Sans", sans-serif; /* body */
+  --font-mono:
+    "Space Grotesk Variable", "Space Grotesk", ui-monospace, "Fira Code",
+    monospace; /* tags, code, technical accents */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--color-white);
+}

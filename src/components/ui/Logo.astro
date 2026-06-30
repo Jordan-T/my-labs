@@ -1,0 +1,31 @@
+---
+// Brand mark (JT), inlined so it inherits `currentColor` and follows the theme
+// accent, with no extra image request (CSS-first).
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<svg
+  class={className}
+  viewBox="0 0 260 260"
+  width="40"
+  height="40"
+  fill="currentColor"
+  aria-hidden="true"
+  focusable="false"
+>
+  <polygon points="51,148.64 106,174.287 106,154.287 51,128.64"></polygon>
+  <polygon points="106,118.287 76,104.298 76,124.298 106,138.287"></polygon>
+  <polygon
+    points="130,200.479 30,153.848 30,33.848 130,80.479 130,60.479 10,4.521 10,24.521 10,144.521 10,164.521 130,220.479"
+  ></polygon>
+  <polygon points="156,208.354 186,194.365 186,174.365 156,188.354"></polygon>
+  <polygon points="186,139.365 156,153.354 156,173.354 186,159.365"></polygon>
+  <polygon points="210,93.174 130,130.479 130,150.479 210,113.174"></polygon>
+  <polygon
+    points="130,95.479 50,58.174 50,78.174 130,115.479 230,68.848 230,188.848 130,235.479 130,255.479 250,199.521 250,179.521 250,59.521 250,39.521"
+  ></polygon>
+</svg>

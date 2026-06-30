@@ -1,0 +1,48 @@
+---
+import Logo from "@/components/ui/Logo.astro";
+---
+
+<header class="header">
+  <a class="brand" href="/" aria-label="Accueil, Jordan Taisne Labs">
+    <Logo class="mark" />
+    <span class="wordmark">Labs</span>
+  </a>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: var(--space-sm) var(--gutter);
+    background: color-mix(in srgb, var(--color-bg) 85%, transparent);
+    backdrop-filter: blur(0.5rem);
+    border-bottom: var(--border-width) solid var(--border-accent-soft);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    width: max-content;
+    color: var(--color-accent);
+    transition: transform var(--transition-base);
+  }
+
+  .brand:hover {
+    transform: scale(1.04);
+  }
+
+  .mark {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .wordmark {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+</style>

@@ -1,0 +1,25 @@
+---
+// First focusable element: lets keyboard users jump straight to <main>.
+---
+
+<a class="skip-link" href="#main">Aller au contenu</a>
+
+<style>
+  .skip-link {
+    position: absolute;
+    top: var(--space-xs);
+    left: var(--space-xs);
+    z-index: 10;
+    padding: var(--space-xs) var(--space-md);
+    color: var(--color-text);
+    background: var(--color-surface-raised);
+    border: var(--border-width) solid var(--accent-edge);
+    border-radius: var(--radius-sm);
+    transform: translateY(-200%);
+    transition: transform var(--transition-base);
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+</style>

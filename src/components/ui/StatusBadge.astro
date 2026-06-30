@@ -1,0 +1,31 @@
+---
+// Experiment status pill. Colours from the generated --status-* tokens.
+interface Props {
+  status: "wip" | "done";
+}
+
+const { status } = Astro.props;
+const label = status === "wip" ? "En cours" : "Terminé";
+---
+
+<span class:list={["status", `status-${status}`]}>{label}</span>
+
+<style>
+  .status {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: var(--space-2xs) var(--space-xs);
+    border: var(--border-width) solid;
+    border-radius: var(--radius-pill);
+  }
+
+  .status-wip {
+    color: var(--status-wip-c);
+    border-color: var(--status-wip-b);
+  }
+
+  .status-done {
+    color: var(--status-done-c);
+    border-color: var(--status-done-b);
+  }
+</style>

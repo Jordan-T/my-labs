@@ -1,0 +1,74 @@
+---
+import { Image } from "astro:assets";
+import Surface from "@/components/ui/Surface.astro";
+import Tags from "@/components/ui/Tags.astro";
+import StatusBadge from "@/components/ui/StatusBadge.astro";
+import type { Experiment } from "@/lib/experiments";
+
+interface Props {
+  experiment: Experiment;
+}
+
+const { experiment } = Astro.props;
+const { title, description, status, tags, image } = experiment.data;
+---
+
+<Surface as="a" href={`/experiments/${experiment.id}`} fill>
+  {
+    /* image && (
+      <div class="thumb" aria-hidden="true">
+        <Image src={image} alt="" width={320} height={320} loading="lazy" />
+      </div>
+    ) */
+  }
+  <article class="body">
+    <header class="head">
+      <h2 class="title">{title}</h2>
+      <StatusBadge status={status} />
+    </header>
+    <p class="desc">{description}</p>
+    <Tags tags={tags} />
+  </article>
+</Surface>
+
+<style>
+  /* Subtle visual hint: the image sits on the right edge, faded out toward the
+     content so it never competes with the text. */
+  .thumb {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: right center;
+    opacity: 0.4;
+    mask-image: linear-gradient(to right, transparent 30%, currentcolor 85%);
+  }
+
+  .body {
+    position: relative;
+    z-index: 1;
+  }
+
+  .head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .desc {
+    margin-bottom: var(--space-md);
+    color: var(--color-text-muted);
+  }
+</style>
