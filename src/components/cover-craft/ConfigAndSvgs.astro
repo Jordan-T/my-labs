@@ -1,0 +1,566 @@
+---
+import motifsSvg from "./images/motifs/generated/motifs.svg?raw";
+---
+
+<script is:inline>
+  var styles = [
+    {
+      name: "Nature",
+      value: 0,
+      motifs: [
+        {
+          name: "Arbustre",
+          value: "arbustre",
+        },
+        {
+          name: "Branche",
+          value: "branche",
+        },
+        {
+          name: "Exotique",
+          value: "exotique",
+        },
+        {
+          name: "Feuille",
+          value: "feuille",
+        },
+        {
+          name: "Geometrique",
+          value: "geometrique",
+        },
+        {
+          name: "Graphique",
+          value: "graphique",
+        },
+        {
+          name: "Oiseau",
+          value: "oiseau",
+        },
+        {
+          name: "Papillon",
+          value: "papillon",
+        },
+        {
+          name: "Pissenlit",
+          value: "pissenlit",
+        },
+        {
+          name: "Plume",
+          value: "plume",
+        },
+        {
+          name: "Typo",
+          value: "typo",
+        },
+        {
+          name: "Vegetal",
+          value: "vegetal",
+        },
+        {
+          name: "Carré",
+          value: "carre",
+        },
+        {
+          name: "Losange",
+          value: "losange",
+        },
+        {
+          name: "Rond",
+          value: "rond",
+        },
+      ],
+      colors: [
+        {
+          name: "fff",
+          value: "#FFF",
+          selected: true,
+        },
+        {
+          name: "ede5d1",
+          value: "#ede5d1",
+        },
+        {
+          name: "c9c4c1",
+          value: "#c9c4c1",
+        },
+        {
+          name: "9bd3bc",
+          value: "#9bd3bc",
+        },
+        {
+          name: "c5d340",
+          value: "#c5d340",
+        },
+        {
+          name: "80b739",
+          value: "#80b739",
+        },
+        {
+          name: "2c932c",
+          value: "#2c932c",
+        },
+        {
+          name: "26776d",
+          value: "#26776d",
+        },
+        {
+          name: "0e4442",
+          value: "#0e4442",
+        },
+      ],
+      motifColors: [
+        {
+          name: "fff",
+          value: "#FFF",
+        },
+        {
+          name: "ede5d1",
+          value: "#ede5d1",
+        },
+        {
+          name: "c9c4c1",
+          value: "#c9c4c1",
+        },
+        {
+          name: "9bd3bc",
+          value: "#9bd3bc",
+        },
+        {
+          name: "c5d340",
+          value: "#c5d340",
+        },
+        {
+          name: "80b739",
+          value: "#80b739",
+          selected: true,
+        },
+        {
+          name: "2c932c",
+          value: "#2c932c",
+        },
+        {
+          name: "26776d",
+          value: "#26776d",
+        },
+        {
+          name: "0e4442",
+          value: "#0e4442",
+        },
+      ],
+    },
+    {
+      name: "Urban",
+      value: 1,
+      motifs: [
+        {
+          name: "Brique",
+          value: "brique",
+        },
+        {
+          name: "City",
+          value: "city",
+        },
+        {
+          name: "Drapeau",
+          value: "drapeau",
+        },
+        {
+          name: "Etoile",
+          value: "etoile",
+        },
+        {
+          name: "I love you",
+          value: "Iloveyou",
+        },
+        {
+          name: "Loft",
+          value: "loft",
+        },
+        {
+          name: "Moustache",
+          value: "moustache",
+        },
+        {
+          name: "NYC",
+          value: "NYC",
+        },
+        {
+          name: "Street",
+          value: "street",
+        },
+        {
+          name: "Tampon",
+          value: "tampon",
+        },
+        {
+          name: "Travaux",
+          value: "travaux",
+        },
+        {
+          name: "Carré",
+          value: "carre",
+        },
+        {
+          name: "Losange",
+          value: "losange",
+        },
+        {
+          name: "Rond",
+          value: "rond",
+        },
+      ],
+      colors: [
+        {
+          name: "fff",
+          value: "#FFF",
+          selected: true,
+        },
+        {
+          name: "cecece",
+          value: "#cecece",
+        },
+        {
+          name: "2ad4d8",
+          value: "#2ad4d8",
+        },
+        {
+          name: "ff2508",
+          value: "#ff2508",
+        },
+        {
+          name: "f9ed12",
+          value: "#f9ed12",
+        },
+        {
+          name: "b3bfc4",
+          value: "#b3bfc4",
+        },
+        {
+          name: "9a9c9e",
+          value: "#9a9c9e",
+        },
+        {
+          name: "5b5b5b",
+          value: "#5b5b5b",
+        },
+        {
+          name: "000",
+          value: "#000",
+        },
+      ],
+      motifColors: [
+        {
+          name: "fff",
+          value: "#FFF",
+        },
+        {
+          name: "cecece",
+          value: "#cecece",
+        },
+        {
+          name: "2ad4d8",
+          value: "#2ad4d8",
+        },
+        {
+          name: "ff2508",
+          value: "#ff2508",
+        },
+        {
+          name: "f9ed12",
+          value: "#f9ed12",
+        },
+        {
+          name: "b3bfc4",
+          value: "#b3bfc4",
+          selected: true,
+        },
+        {
+          name: "9a9c9e",
+          value: "#9a9c9e",
+        },
+        {
+          name: "5b5b5b",
+          value: "#5b5b5b",
+        },
+        {
+          name: "000",
+          value: "#000",
+        },
+      ],
+    },
+    {
+      name: "Evasion",
+      value: 2,
+      motifs: [
+        {
+          name: "Cercle",
+          value: "cercle",
+        },
+        {
+          name: "Elephant",
+          value: "elephant",
+        },
+        {
+          name: "Floral",
+          value: "floral",
+        },
+        {
+          name: "Frise",
+          value: "frise",
+        },
+        {
+          name: "Frise2",
+          value: "frise2",
+        },
+        {
+          name: "Indou",
+          value: "indou",
+        },
+        {
+          name: "Navajo",
+          value: "navajo",
+        },
+        {
+          name: "Navajo 2",
+          value: "navajo2",
+        },
+        {
+          name: "Paisley",
+          value: "paisley",
+        },
+        {
+          name: "Rose",
+          value: "rose",
+        },
+        {
+          name: "Zebre",
+          value: "zebre",
+        },
+        {
+          name: "Carré",
+          value: "carre",
+        },
+        {
+          name: "Losange",
+          value: "losange",
+        },
+        {
+          name: "Rond",
+          value: "rond",
+        },
+      ],
+      colors: [
+        {
+          name: "Blanc",
+          value: "#FFF",
+          selected: true,
+        },
+        {
+          name: "b5ac9e",
+          value: "#b5ac9e",
+        },
+        {
+          name: "e01e88",
+          value: "#e01e88",
+        },
+        {
+          name: "f47451",
+          value: "#f47451",
+        },
+        {
+          name: "d8b419",
+          value: "#d8b419",
+        },
+        {
+          name: "c95b11",
+          value: "#c95b11",
+        },
+        {
+          name: "7f4924",
+          value: "#7f4924",
+        },
+        {
+          name: "512918",
+          value: "#512918",
+        },
+        {
+          name: "000",
+          value: "#000",
+        },
+      ],
+      motifColors: [
+        {
+          name: "Blanc",
+          value: "#FFF",
+        },
+        {
+          name: "b5ac9e",
+          value: "#b5ac9e",
+        },
+        {
+          name: "e01e88",
+          value: "#e01e88",
+        },
+        {
+          name: "f47451",
+          value: "#f47451",
+        },
+        {
+          name: "d8b419",
+          value: "#d8b419",
+        },
+        {
+          name: "c95b11",
+          value: "#c95b11",
+          selected: true,
+        },
+        {
+          name: "7f4924",
+          value: "#7f4924",
+        },
+        {
+          name: "512918",
+          value: "#512918",
+        },
+        {
+          name: "000",
+          value: "#000",
+        },
+      ],
+    },
+    {
+      name: "Charme",
+      value: 3,
+      motifs: [
+        {
+          name: "Arabesque",
+          value: "arabesque",
+        },
+        {
+          name: "Arabesque 2",
+          value: "arabesque2",
+        },
+        {
+          name: "Coeur",
+          value: "coeur",
+        },
+        {
+          name: "Coeur 2",
+          value: "coeur2",
+        },
+        {
+          name: "Dentelle",
+          value: "dentelle",
+        },
+        {
+          name: "Fleurette",
+          value: "fleurette",
+        },
+        {
+          name: "Flore",
+          value: "flore",
+        },
+        {
+          name: "Frise",
+          value: "frise",
+        },
+        {
+          name: "Oiseau",
+          value: "oiseau",
+        },
+        {
+          name: "Papillon",
+          value: "papillon",
+        },
+        {
+          name: "Plume",
+          value: "plume",
+        },
+        {
+          name: "Rose",
+          value: "rose",
+        },
+      ],
+      colors: [
+        {
+          name: "Blanc",
+          value: "#FFF",
+          selected: true,
+        },
+        {
+          name: "f4e7d4",
+          value: "#f4e7d4",
+        },
+        {
+          name: "eaced1",
+          value: "#eaced1",
+        },
+        {
+          name: "e0d1df",
+          value: "#e0d1df",
+        },
+        {
+          name: "c6c1c1",
+          value: "#c6c1c1",
+        },
+        {
+          name: "f2bdd8",
+          value: "#f2bdd8",
+        },
+        {
+          name: "d8abd8",
+          value: "#d8abd8",
+        },
+        {
+          name: "a98faa",
+          value: "#a98faa",
+        },
+        {
+          name: "6d5757",
+          value: "#6d5757",
+        },
+      ],
+      motifColors: [
+        {
+          name: "Blanc",
+          value: "#FFF",
+        },
+        {
+          name: "f4e7d4",
+          value: "#f4e7d4",
+        },
+        {
+          name: "eaced1",
+          value: "#eaced1",
+        },
+        {
+          name: "e0d1df",
+          value: "#e0d1df",
+        },
+        {
+          name: "c6c1c1",
+          value: "#c6c1c1",
+        },
+        {
+          name: "f2bdd8",
+          value: "#f2bdd8",
+          selected: true,
+        },
+        {
+          name: "d8abd8",
+          value: "#d8abd8",
+        },
+        {
+          name: "a98faa",
+          value: "#a98faa",
+        },
+        {
+          name: "6d5757",
+          value: "#6d5757",
+        },
+      ],
+    },
+  ];
+</script>
+
+<Fragment set:html={motifsSvg} />

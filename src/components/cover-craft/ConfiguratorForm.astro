@@ -1,0 +1,95 @@
+<form
+  action="#"
+  method="post"
+  enctype="multipart/form-data"
+  id="creation-parure-form"
+  class="creation-parure-form is-loading"
+>
+  <div class="form-style-zone">
+    <div class="input-container">
+      <label for="style" class="description">Le style</label>
+      <select
+        name="style"
+        id="style"
+        class="validate[required] configurator-input configurator-input--style"
+      >
+        <option value="0">Nature</option>
+        <option value="1">Urban</option>
+        <option value="2">Évasion</option>
+        <option value="3">Charme</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-config-color-zone">
+    <div class="input-container">
+      <label for="couleur_fond" class="description">La couleur de fond</label>
+      <select
+        name="couleur_fond"
+        id="couleur_fond"
+        class="validate[required] configurator-input configurator-input--color color-select"
+      >
+        <option value="0">-- Choisir la couleur de parrure --</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-motif-choice-zone">
+    <div class="input-container">
+      <label for="motif" class="description">Le motif</label>
+      <select
+        name="motif"
+        id="motif"
+        class="validate[required] configurator-input configurator-input--motif"
+      >
+        <option value="0">-- Choisir son motif --</option>
+      </select>
+    </div>
+    <div class="motif-zone"></div>
+  </div>
+
+  <div class="form-motif-actif-zone">
+    <div
+      class="form-motif-actif-message"
+      title="Veuillez selectionné un motif dans la zonne de configuration"
+    >
+    </div>
+
+    <div class="input-container">
+      <label for="couleur_motif" class="description">La couleur du motif</label>
+      <select
+        name="couleur_motif"
+        id="couleur_motif"
+        class="validate[required] configurator-input configurator-input--motif-color color-select"
+      >
+        <option value="0">-- Choisir sa couleur --</option>
+      </select>
+    </div>
+
+    <div class="input-container">
+      <label for="repetition" class="description">La répétition du motif</label>
+      <select
+        name="repetition"
+        id="repetition"
+        class="validate[required] configurator-input configurator-input--repeat"
+      >
+        <option value="0">Pas de répétition</option>
+        <option value="1">Répétition horizontale</option>
+        <option value="2">Répétition verticale</option>
+        <option value="3">Mosaïque</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="submit-container">
+    <button
+      type="submit"
+      name="submit"
+      id="submit"
+      class="button button-submit"
+      value="je valide !"
+    >
+      Je valide
+    </button>
+  </div>
+</form>

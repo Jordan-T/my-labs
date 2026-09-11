@@ -1,0 +1,34 @@
+---
+import ConfiguratorForm from "./ConfiguratorForm.astro";
+import ConfiguratorEndForm from "./ConfiguratorEndForm.astro";
+import ConfigAndSvgs from "./ConfigAndSvgs.astro";
+---
+
+<div class="configurateur configurateur--base zone-primary">
+  <div class="zone-primary-content">
+    <h1 class="rubrique-title">
+      <span>Cover craft</span>
+    </h1>
+
+    <ConfiguratorForm />
+
+    <ConfiguratorEndForm />
+
+    <span class="obligatoire">* Champs obligatoire</span>
+  </div>
+
+  <div class="zone-primary-img zone-configurateur">
+    <div
+      id="configurateur-zone"
+      class="configurateur__zone--base configurateur__zone"
+    >
+      <div>
+        <svg class="motifs-zone"></svg>
+      </div>
+      <div class="front-zone"></div>
+      <div class="managers-zone"></div>
+    </div>
+  </div>
+</div>
+
+<ConfigAndSvgs />

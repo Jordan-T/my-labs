@@ -1,0 +1,676 @@
+/* Configurator widget — layout + interaction styles.
+   Ported from scss/app/organisms/{page,configurateur}.scss, keeping only
+   the selectors this component's markup and configurator.v1.js actually
+   produce. Dropped as dead code (verified against the real markup/JS,
+   not present anywhere): .action-group--horizontal, .action-group--validate,
+   .action.success, .outils-zone, the jQuery UI helper classes other than
+   .ui-draggable-handle, and the checkbox-container styles (no checkboxes
+   in this form). */
+
+/* Two-column page layout: image left, form right from ~1089px up */
+
+.zone-primary {
+  position: relative;
+  width: 100%;
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--cc-color-white);
+  box-shadow: 0 0 4px #b2b2b2;
+  border-radius: var(--cc-radius);
+  min-height: 538px;
+}
+
+.zone-primary-content {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.zone-primary-img {
+  float: none;
+  text-align: center;
+  margin: 30px -20px 0 -20px;
+  overflow: hidden;
+}
+
+.zone-configurateur {
+  clear: both;
+}
+
+@media (min-width: 68.063em) {
+  .zone-primary-content {
+    margin-left: 368px;
+    padding-left: 20px;
+  }
+
+  .zone-primary-img {
+    float: left;
+    width: 368px;
+    margin: 0;
+    overflow: visible;
+  }
+
+  .zone-configurateur {
+    position: absolute;
+    top: 20px;
+  }
+}
+
+/* Configurator canvas: duvet preview + motif layers */
+
+.configurateur {
+  position: relative;
+  min-height: 538px;
+  margin-bottom: 108px;
+}
+
+.configurateur__zone * {
+  user-select: none;
+}
+
+.configurateur__zone--base {
+  position: relative;
+  width: 340px;
+  height: 510px;
+  margin: 0 auto;
+  background-color: var(--cc-color-white);
+  transition: background 0.2s ease;
+  border-radius: 10px;
+}
+
+.motifs-zone,
+.front-zone,
+.managers-zone {
+  position: absolute;
+  inset: 0;
+}
+
+.motifs-zone {
+  overflow: hidden;
+}
+
+.motifs-zone .motif,
+.managers-zone .manager {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.configurateur__zone--base .front-zone {
+  background-image: url("../images/configurateur-front.png");
+  background-size: 100% 100%;
+}
+
+.configurateur__zone--base .managers-zone {
+  overflow: hidden;
+}
+
+.configurateur__zone--base.has-active .managers-zone {
+  overflow: visible;
+}
+
+.configurateur__zone--base.is-disabled .managers-zone {
+  display: none;
+}
+
+.configurateur__zone:hover .manager {
+  outline-width: 1px;
+}
+
+.configurateur__zone.has-active:hover .manager:not(.is-active) {
+  outline-width: 0;
+}
+
+.configurateur__zone.has-active:hover .manager:not(.is-active):hover {
+  outline-width: 1px !important;
+}
+
+/* Motif picker (the thumbnail grid under "Le motif") */
+
+.motif-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-height: 285px;
+  border: 1px solid var(--cc-color-border);
+  border-radius: 4px;
+  padding: 4px;
+  background-color: #f4f4f4;
+}
+
+.motif-container::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.motif-selector {
+  position: relative;
+  float: left;
+  width: 65px;
+  height: 65px;
+  text-align: center;
+  cursor: move;
+}
+
+.motif-selector svg {
+  width: 100%;
+  display: block;
+}
+
+.motif-selector::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  padding-top: 50%;
+  background: rgba(0, 0, 0, 0.5) url("../images/pictos/plus1.svg") center center
+    no-repeat;
+  background-size: 75% 75%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.1s ease;
+  opacity: 0;
+}
+
+.motif-selector:hover::before {
+  opacity: 1;
+}
+
+.motif-selector:hover.draggable-handle::before {
+  display: none;
+}
+
+@media (min-width: 61.063em) {
+  .creation-parure-form .motif-container {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .creation-parure-form .motif-container__inner {
+    width: auto !important;
+    padding: 10px 0;
+  }
+}
+
+/* jQuery UI: draggable widget needs this to work on touch devices */
+
+.ui-draggable-handle {
+  touch-action: none;
+}
+
+/* Manager toolbar (move / resize / rotate / layer / delete overlay
+   that appears on a placed motif) */
+
+.managers-zone .manager {
+  outline: solid 0 #000;
+  cursor: pointer;
+  transform-origin: 0 0;
+}
+
+.managers-zone .manager:hover,
+.managers-zone .manager.is-active {
+  outline-width: 2px !important;
+}
+
+.managers-zone .manager.is-active {
+  cursor: default;
+  z-index: 20;
+}
+
+.managers-zone .action,
+.managers-zone .action-group {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.managers-zone .manager.is-active .action,
+.managers-zone .manager.is-active .action-group {
+  visibility: visible;
+  opacity: 1;
+}
+
+.managers-zone .action::after,
+.managers-zone .action-group::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: 90% 90%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.managers-zone .action {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  line-height: 22px;
+  text-align: center;
+  border: 1px solid color-mix(in srgb, var(--cc-color-accent) 85%, black);
+  cursor: pointer;
+  color: var(--cc-color-white);
+  background-color: var(--cc-color-accent);
+}
+
+.managers-zone .action.disabled {
+  cursor: default;
+  opacity: 0.7;
+  box-shadow: none;
+}
+
+.managers-zone .action.alert {
+  background-color: var(--cc-color-accent);
+}
+
+.managers-zone .action--button {
+  border-radius: 3px;
+}
+
+.managers-zone .action-group {
+  position: absolute;
+  min-width: 25px;
+  min-height: 25px;
+  background: var(--cc-color-accent);
+  border-radius: 3px;
+}
+
+.managers-zone .action-group .action {
+  position: relative;
+  display: none;
+}
+
+.managers-zone .action-group:hover {
+  z-index: 50;
+}
+
+.managers-zone .action-group:hover::after {
+  display: none;
+}
+
+.managers-zone .action-group:hover .action {
+  display: block;
+}
+
+.managers-zone .action-group--vertical .action:first-child {
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.managers-zone .action-group--vertical .action:last-child {
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.managers-zone .action--move {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: none;
+  border: none;
+  cursor: move;
+}
+
+.managers-zone .action--move::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30%;
+  padding-top: 30%;
+  background: rgba(0, 0, 0, 0.5) url("../images/pictos/cursor-move.svg") center
+    center no-repeat;
+  background-size: 75% 75%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.1s ease;
+}
+
+.managers-zone .action--move:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.managers-zone .action--move:hover::before {
+  transform: translate(-50%, -50%) scale(1.5);
+}
+
+.managers-zone .action--width,
+.managers-zone .action--rotate,
+.managers-zone .action--height,
+.managers-zone .action--size,
+.managers-zone .action--cancel,
+.managers-zone .action--remove {
+  margin: -12px;
+}
+
+.managers-zone .action--rotate {
+  top: 0;
+  left: 0;
+  cursor: e-resize;
+}
+.managers-zone .action--rotate::after {
+  background-image: url("../images/pictos/refresh.svg");
+}
+
+.managers-zone .action--width {
+  top: 50%;
+  left: 100%;
+  cursor: e-resize;
+}
+.managers-zone .action--width::after {
+  background-image: url("../images/pictos/cursor-horizontal.svg");
+}
+
+.managers-zone .action--height {
+  top: 100%;
+  left: 50%;
+  cursor: n-resize;
+}
+.managers-zone .action--height::after {
+  background-image: url("../images/pictos/cursor-vertical.svg");
+}
+
+.managers-zone .action--size {
+  top: 100%;
+  left: 100%;
+  cursor: nw-resize;
+}
+.managers-zone .action--size::after {
+  background-image: url("../images/pictos/cursor-diagonal.svg");
+}
+
+.managers-zone .action--cancel {
+  top: 0;
+  left: 50%;
+}
+.managers-zone .action--cancel::after {
+  background-image: url("../images/pictos/x-mark.svg");
+}
+
+.managers-zone .action--remove {
+  top: 0;
+  left: 100%;
+}
+.managers-zone .action--remove::after {
+  background-image: url("../images/pictos/trash.svg");
+}
+
+.managers-zone .action--top::after {
+  background-image: url("../images/pictos/layer-top.svg");
+}
+.managers-zone .action--up::after {
+  background-image: url("../images/pictos/layer-up.svg");
+}
+.managers-zone .action--down::after {
+  background-image: url("../images/pictos/layer-down.svg");
+}
+.managers-zone .action--bottom::after {
+  background-image: url("../images/pictos/layer-bottom.svg");
+}
+
+.managers-zone .action-group--index {
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+.managers-zone .action-group--index::after {
+  background-image: url("../images/pictos/layer-param.svg");
+}
+
+/* Color swatch pickers (jquery.simplecolorpicker generated markup) */
+
+.simplecolorpicker.picker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1051;
+  display: block;
+  float: left;
+  min-width: 100px;
+  max-width: 283px;
+  padding: 5px 0 0 5px;
+  margin: 2px 0 0;
+  list-style: none;
+  background-color: var(--cc-color-white);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  background-clip: padding-box;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.2s,
+    visibility 0.2s;
+}
+
+.simplecolorpicker.picker.is-show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.simplecolorpicker.inline {
+  display: inline-block;
+  padding: 6px 0;
+}
+
+.simplecolorpicker span {
+  margin: 0 5px 5px 0;
+}
+
+.simplecolorpicker.icon,
+.simplecolorpicker span.color {
+  display: block;
+  cursor: pointer;
+  border: 1px solid var(--cc-color-border);
+  border-radius: 4px;
+}
+
+.simplecolorpicker.icon {
+  display: inline-block;
+  position: relative;
+  padding: 3px 24px 3px 3px;
+  background: var(--cc-color-white);
+  border: solid 1px #dbdbdb;
+  border-radius: var(--cc-radius);
+}
+
+.simplecolorpicker.icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  margin: -2px;
+  border: solid 4px transparent;
+  border-bottom: none;
+  border-top-color: #000;
+}
+
+.simplecolorpicker.icon:hover {
+  border-color: #a3a3a3;
+}
+
+.simplecolorpicker__inner {
+  display: block;
+  margin: 0 !important;
+  width: 50px;
+  height: 20px;
+  border: solid 1px;
+  border-color: inherit;
+  border-radius: 4px;
+}
+
+.simplecolorpicker.icon::after,
+.simplecolorpicker span.color::after {
+  content: "";
+  display: block;
+  height: 20px;
+}
+
+.simplecolorpicker span.color[data-disabled]:hover {
+  cursor: not-allowed;
+  border: 1px solid transparent;
+}
+
+.simplecolorpicker span.color[data-color="#FFF"] {
+  border: 1px solid #555;
+}
+
+.simplecolorpicker span.color:hover,
+.simplecolorpicker span.color[data-selected],
+.simplecolorpicker span.color[data-selected]:hover {
+  border: 1px solid #222;
+}
+
+.simplecolorpicker span.vr {
+  border-left: 1px solid #222;
+}
+
+/* The two configurator forms: step 1 (style/motif/color) and the hidden
+   step 2 recap form that's swapped in on submit */
+
+.creation-parure-form select {
+  border-width: 1px;
+  height: 28px;
+  border-radius: var(--cc-radius);
+}
+
+.creation-parure-form .form-style-zone,
+.creation-parure-form .form-config-color-zone,
+.creation-parure-form .form-motif-actif-zone .input-container {
+  float: left;
+  width: 47%;
+  margin-bottom: 6px;
+}
+
+.creation-parure-form .form-style-zone,
+.creation-parure-form .form-motif-actif-zone .input-container:first-child {
+  margin-right: 6%;
+}
+
+.creation-parure-form .form-motif-choice-zone {
+  clear: both;
+  margin-bottom: 6px;
+}
+
+.creation-parure-form .form-motif-actif-zone {
+  position: relative;
+}
+
+.creation-parure-form .form-motif-actif-zone::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.creation-parure-form .form-motif-actif-message {
+  display: none;
+}
+
+.creation-parure-form [type="submit"] {
+  display: none;
+}
+
+.creation-parure-form.has-motif [type="submit"] {
+  display: inline-block;
+}
+
+.creation-parure-form.is-disabled {
+  display: none;
+}
+
+.creation-parure-form.is-disabled ~ .enregistrement-parure-form,
+.creation-parure-form.is-disabled ~ .obligatoire {
+  display: block;
+}
+
+.creation-parure-form.is-loading {
+  opacity: 0.5;
+}
+
+.creation-parure-form.is-loading,
+.creation-parure-form.is-loading * {
+  cursor: not-allowed;
+}
+
+.creation-parure-form .submit-container,
+.enregistrement-parure-form .submit-container {
+  bottom: -76px;
+  left: 0;
+  right: 0;
+  position: static;
+  width: 100%;
+  text-align: center;
+}
+
+@media (min-width: 41.063em) {
+  .creation-parure-form .submit-container,
+  .enregistrement-parure-form .submit-container {
+    position: absolute;
+  }
+}
+
+@media (min-width: 61.063em) {
+  .creation-parure-form .form-style-zone,
+  .creation-parure-form .form-motif-choice-zone {
+    float: left;
+    width: 55%;
+    margin-right: 5%;
+    clear: both;
+    margin-bottom: 6px;
+  }
+
+  .creation-parure-form .form-config-color-zone,
+  .creation-parure-form .form-motif-actif-zone {
+    float: left;
+    width: 40%;
+    margin-bottom: 6px;
+  }
+
+  .creation-parure-form .form-motif-actif-zone .input-container {
+    float: none;
+    margin: 0 0 6px;
+    width: auto;
+  }
+}
+
+.enregistrement-parure-form {
+  display: none;
+}
+
+.enregistrement-parure-form .input-container {
+  clear: both;
+}
+
+.enregistrement-parure-form .input-container label,
+.enregistrement-parure-form .input-container input,
+.enregistrement-parure-form .input-container textarea {
+  width: 50%;
+  float: left;
+}
+
+#error {
+  color: red;
+  display: block;
+  margin-bottom: 10px;
+  margin-top: -12px;
+  padding: 0 26px;
+  line-height: 13px;
+  font-size: 12px;
+}
+
+.obligatoire {
+  display: none;
+  margin: 10px 0;
+  font: 500 italic 11px/1.5 var(--cc-font-heavy-condensed);
+}
+
+.p_return {
+  color: blue;
+  text-decoration: underline;
+}
+
+.enregistrement-parure-form {
+  background: lightblue;
+  margin: -0.7rem -1rem -2rem;
+  padding: 0.7rem 1rem 2rem;
+}
