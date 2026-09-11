@@ -1,0 +1,116 @@
+---
+// CTA button/link primitive. Renders <a> when href is set, <button> otherwise.
+// Ported from my-portfolio-next's Button component onto this project's design
+// tokens — see .ai/context/design-system.md.
+export type ButtonVariant = "primary" | "secondary" | "link" | "back";
+
+interface Props {
+  variant?: ButtonVariant;
+  size?: "small";
+  href?: string;
+  target?: string;
+  rel?: string;
+  type?: "button" | "submit";
+  class?: string;
+}
+
+const {
+  variant = "primary",
+  size,
+  href,
+  target,
+  rel,
+  type = "button",
+  class: className,
+}: Props = Astro.props;
+
+const cls = ["btn", variant, size, className];
+---
+
+{
+  href ? (
+    <a class:list={cls} href={href} target={target} rel={rel}>
+      <slot />
+    </a>
+  ) : (
+    <button class:list={cls} type={type}>
+      <slot />
+    </button>
+  )
+}
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: var(--fs-small);
+    text-decoration: none !important;
+    transition:
+      color var(--transition-base),
+      background var(--transition-base),
+      border-color var(--transition-base);
+  }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 0.25rem;
+  }
+
+  .primary,
+  .secondary {
+    gap: var(--space-sm);
+    padding: 1em 2em;
+    border: 1px solid currentColor;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: var(--fs-small);
+    color: var(--color-accent);
+    letter-spacing: var(--ls-cta);
+  }
+
+  .primary:hover,
+  .secondary:hover {
+    color: var(--color-accent);
+    background: var(--accent-wash);
+    border-color: var(--color-accent);
+  }
+
+  .secondary {
+    color: var(--color-text);
+    border-color: var(--accent-edge-soft);
+  }
+
+  .link,
+  .back {
+    color: var(--color-accent);
+  }
+
+  .link::after {
+    content: "→";
+    display: inline-block;
+    margin-left: var(--space-xs);
+    transition: transform var(--transition-base);
+  }
+
+  .back::before {
+    content: "←";
+    display: inline-block;
+    margin-right: var(--space-xs);
+    transition: transform var(--transition-base);
+  }
+
+  .link:hover::after {
+    transform: translateX(0.3125em);
+  }
+
+  .back:hover::before {
+    transform: translateX(-0.3125em);
+  }
+
+  .small.primary,
+  .small.secondary {
+    padding: 0.5em 1em;
+    font-size: var(--fs-label);
+  }
+</style>

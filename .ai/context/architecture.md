@@ -68,5 +68,6 @@ Site-wide info (name, role, URL, portfolio backlink, socials) lives in
 ## SEO
 
 - Per-page `<title>`/description handled in `BaseLayout.astro`.
-- The `noindex` robots meta and `public/robots.txt` `Disallow: /` are
-  intentional pre-launch (see [`project.md`](./project.md)).
+- The site is live and indexable — the pre-launch `noindex` meta and
+  `public/robots.txt` `Disallow: /` were removed at go-live (see
+  [`project.md`](./project.md)).

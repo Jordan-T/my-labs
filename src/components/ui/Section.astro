@@ -29,4 +29,8 @@ const { prose = false, class: className } = Astro.props;
   .inner.prose {
     max-width: var(--maxw-prose);
   }
+
+  .inner.prose :global(.large-content) {
+    margin-inline: min(0px, calc(-50vw + (var(--maxw-prose) / 2)));
+  }
 </style>

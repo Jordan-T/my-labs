@@ -89,8 +89,8 @@ export function siteColors(p: BrandPalette = brand): Record<string, string> {
     "--tag-concept-b": mix("--color-accent-alert", 25),
 
     // Statuses
-    "--status-wip-c": "var(--color-accent-alert)",
-    "--status-wip-b": mix("--color-accent-alert", 30),
+    "--status-wip-c": "var(--color-text-muted)",
+    "--status-wip-b": mix("--color-text-muted", 30),
     "--status-done-c": "var(--color-text-muted)",
     "--status-done-b": mix("--color-text-muted", 30),
 

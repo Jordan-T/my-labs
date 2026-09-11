@@ -4,12 +4,17 @@
 interface Props {
   src: string;
   title: string;
+  class: string;
+  height: string;
 }
 
-const { src, title } = Astro.props;
+const { src, title, class: className, height } = Astro.props;
 ---
 
-<div class="embed">
+<div
+  class:list={["embed", className]}
+  style={height ? `height: ${height}; aspect-ratio: auto` : undefined}
+>
   <iframe src={src} title={title} loading="lazy" allowfullscreen></iframe>
 </div>
 
