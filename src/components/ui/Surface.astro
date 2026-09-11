@@ -21,7 +21,10 @@ const {
 }: Props = Astro.props;
 ---
 
-<Element class:list={["surface", { "surface--fill": fill }, className]} href={href}>
+<Element
+  class:list={["surface", { "surface--fill": fill }, className]}
+  href={href}
+>
   <slot />
 </Element>
 

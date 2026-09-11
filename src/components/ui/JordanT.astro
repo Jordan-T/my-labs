@@ -11,9 +11,6 @@ const { class: className } = Astro.props;
 
 <div class:list={["wrap", className]}>
   <span class="hex" aria-hidden="true"></span>
-  {/* The wrapper isolates the one-shot slide-up so each element carries a
-      single transform animation (wrap float / reveal slide / photo float):
-      two transform animations on one element fall back to the main thread. */}
   <span class="reveal">
     <Image
       src={portrait}
@@ -61,7 +58,6 @@ const { class: className } = Astro.props;
     animation: appear 1.25s var(--transition-base) both;
   }
 
-  /* The portrait is rendered by <Image>, so it is targeted as a global child. */
   .reveal :global(img) {
     --float-height: -1rem;
 
