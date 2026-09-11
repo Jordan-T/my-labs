@@ -1,0 +1,109 @@
+/* Base rules — variables + the handful of element/utility styles the
+   widget's own markup relies on (button, form fields, page title).
+   Values ported 1:1 from the old Sass settings (see scss/_settings.scss),
+   not recomputed — same colors, same radius, same fonts. */
+
+:root {
+  --cc-color-accent: #e75113; /* was $primary-color / $alert-color (identical in the old settings) */
+  --cc-color-dark: #313131; /* was $secondary-color — button background */
+  --cc-color-white: #fff;
+  --cc-color-black: #303030; /* body/label text */
+  --cc-color-border: #efeeef;
+  --cc-radius: 6px;
+
+  --cc-font-base: "HelveticaNeueLTPro", Helvetica, Arial, sans-serif;
+  --cc-font-bold: "HelveticaNeueLTPro-Bd", Helvetica, Arial, sans-serif;
+  --cc-font-heavy-condensed:
+    "HelveticaNeueLTPro-HvCn", Helvetica, Arial, sans-serif;
+}
+
+.configurateur {
+  font-family: var(--cc-font-base);
+}
+
+/* Buttons */
+
+button,
+.button {
+  all: unset;
+  color: var(--cc-color-white);
+  line-height: 1.1;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  background: var(--cc-color-dark);
+  font-family: var(--cc-font-heavy-condensed);
+  border-radius: var(--cc-radius);
+}
+
+button:hover,
+button:focus,
+.button:hover,
+.button:focus {
+  background: color-mix(in srgb, var(--cc-color-dark) 85%, white);
+}
+
+/* Form fields */
+
+label {
+  font-family: var(--cc-font-bold);
+  color: var(--cc-color-black);
+  font-size: 15px;
+  line-height: 27px;
+  display: block;
+}
+
+select,
+input[type="text"] {
+  font-family: var(--cc-font-bold);
+  box-shadow: none;
+  font-size: 11px;
+  border: 1px solid var(--cc-color-border);
+  background-color: var(--cc-color-white);
+  color: var(--cc-color-black);
+  border-radius: 4px;
+  height: 25px;
+  line-height: 1em;
+  width: 100%;
+  display: block;
+}
+
+select:hover {
+  background-color: var(--cc-color-white);
+  border-color: var(--cc-color-border);
+}
+
+select:focus,
+input[type="text"]:focus {
+  background-color: var(--cc-color-white);
+  border-color: var(--cc-color-accent);
+  outline: medium none;
+}
+
+textarea {
+  line-height: 1.5;
+  height: 100px;
+  border: 1px solid var(--cc-color-border);
+  color: var(--cc-color-black);
+  box-shadow: none;
+}
+
+/* Page title */
+
+.rubrique-title {
+  margin: 0 0 30px;
+  color: var(--cc-color-black);
+  text-transform: uppercase;
+  font-family: var(--cc-font-bold);
+  font-size: 18px;
+  font-weight: 700;
+  border-bottom: 2px solid var(--cc-color-black);
+}
+
+.rubrique-title span {
+  background-color: var(--cc-color-white);
+  padding-right: 9px;
+  position: relative;
+  top: 11px;
+}

@@ -1,0 +1,243 @@
+---
+title: "CoverCraft (2014) : un configurateur jQuery, déjà bien construit"
+description:
+  "Retour sur un configurateur de personnalisation développé en 2014 : ce qu'il faisait déjà bien, avant sa réécriture
+  prévue en TypeScript."
+date: "2026-07-24"
+status: "done"
+featured: true
+published: true
+tags:
+  - label: "jQuery"
+    type: "tool"
+  - label: "jQuery UI"
+    type: "tool"
+  - label: "Grunt"
+    type: "tool"
+  - label: "Configurateur"
+    type: "concept"
+image: "../../assets/experiment-placeholder.svg"
+---
+
+import Button from "@/components/ui/Button.astro";
+import Embed from "@/components/ui/Embed.astro";
+
+CoverCraft est un configurateur de personnalisation visuelle développé en 2014 chez Insitaction, pour le jeu-concours
+d'un client de l'agence : on y compose un motif sur un support en déplaçant, redimensionnant et pivotant des éléments à
+la souris ou au doigt. J'ai fait tout le front, un autre développeur s'est occupé du back, en cohésion. Avant une
+réécriture complète en TypeScript, sans jQuery, que je documenterai dans une entrée séparée, voici ce que cette première
+version faisait déjà bien.
+
+<Embed
+  src="/webview/cover-craft/configurator-v1"
+  title="Configurateur CoverCraft, version originale de 2014"
+  class="large-content content-block"
+  height="650px"
+/>
+
+{/* prettier-ignore */}
+<p><Button variant="link" href="/cover-craft/js/configurator.v1.js" target="_blank" rel="noopener noreferrer">Voir le code source du configurateur</Button></p>
+
+## Le cœur du configurateur
+
+Le fichier s'organise autour de trois fonctions constructeurs : `Motif` pour un élément posé sur le canevas, `Manager`
+pour la poignée qui permet de le déplacer, le redimensionner et le faire pivoter, et `Configurateur` pour
+l'orchestrateur général. Chacune expose son API via `prototype`, ce qui n'était pas un raccourci en 2014 : on commençait
+déjà à parler des classes ES6, mais côté navigateur, le prototype restait la seule vraie façon de faire de la
+programmation orientée objet. Un extrait simplifié, corps de fonctions retirés pour ne garder que la structure (le
+fichier réel fait 1730 lignes), donne une idée de la répartition des responsabilités :
+
+```js
+function Motif(name, x, y, width, height, color, $zone) {}
+Motif.prototype.setPosition = function (x, y) {};
+Motif.prototype.setRotate = function (rotate) {};
+Motif.prototype.setColor = function (color) {};
+Motif.prototype.destroy = function () {};
+
+function Manager(name, x, y, configurateur) {}
+Manager.prototype.setSize = function (width, height, type) {};
+Manager.prototype.active = function (activation) {};
+Manager.prototype.destroy = function (fromParent) {};
+
+function Configurateur($element, $form, styles) {}
+Configurateur.prototype.addManager = function (name, x, y, autoActive) {};
+Configurateur.prototype.setStyle = function (style) {};
+Configurateur.prototype.save = function () {};
+```
+
+`Motif` porte l'état d'un élément, `Manager` porte l'interaction (déplacer, redimensionner, pivoter, activer),
+`Configurateur` orchestre les deux et parle au formulaire. Trois responsabilités, trois objets, plutôt qu'un seul
+fichier qui ferait tout au même endroit.
+
+L'ensemble est encapsulé dans une IIFE qui ne laisse rien fuiter dans le scope global :
+
+```js
+(function ($, window, document) {
+  function newAxe(x, y, deg, xo, yo) {
+    xo = xo || 0;
+    yo = yo || 0;
+
+    return {
+      x: (x - xo) * Math.cos((deg / 180) * Math.PI) + (y - yo) * Math.sin((deg / 180) * Math.PI),
+      y: (y - yo) * Math.cos((deg / 180) * Math.PI) - (x - xo) * Math.sin((deg / 180) * Math.PI),
+    };
+  }
+  // ...
+})(window.jQuery, window, document);
+```
+
+`newAxe` calcule la position d'un point sur un axe pivoté : le genre de petite fonction pure, isolée, qui vit à côté des
+trois constructeurs sans dépendre de leur état. Chaque fonction est documentée en JSDoc (117 tags `@param`/`@returns`
+rien que dans ce fichier), et les événements jQuery sont systématiquement namespacés plutôt que bindés dans le vide :
+
+```js
+self.$form.on("submit.configurateur", function (e) {
+  /* ... */
+});
+
+$(window).on("beforeunload.configurateur", function () {
+  /* ... */
+});
+
+// ailleurs, au nettoyage :
+$(window).off("beforeunload.configurateur");
+```
+
+Même sans scope DOM (jQuery n'offrait pas d'isolation par composant à l'époque), ce namespacing évite qu'un `.off()`
+d'un module écrase les handlers d'un autre : une discipline qui coûte une chaîne de caractères et qui évite des bugs de
+bord difficiles à tracer.
+
+La contrepartie de cette architecture, c'est qu'elle repose sur l'ordre de chargement des balises `<script>` plutôt que
+sur de vrais imports. C'est précisément la couture qu'un système de modules moderne, et la future réécriture en
+TypeScript, referme.
+
+## Manipulation du SVG et calculs géométriques
+
+Outre la structure globale, la gestion du rendu visuel repose sur des choix techniques ciblés pour contourner les
+contraintes de l'époque.
+
+En 2014, la manipulation des éléments SVG via jQuery manquait de fiabilité, notamment sur la gestion des espaces de
+nommage et des attributs vectoriels. Pour garantir un rendu stable, le code bascule sur l'API DOM native dès qu'il
+s'agit d'injecter ou modifier des formes vectorielles :
+
+```js
+use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+use.setAttributeNS(null, "stroke", "none");
+use.setAttributeNS(null, "class", "motif");
+use.setAttributeNS(null, "x", i * x);
+use.setAttributeNS(null, "y", 0);
+use.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#motif-" + this.id + "-use");
+```
+
+jQuery reste utilisé pour l'interface utilisateur globale, tandis que le DOM SVG est géré directement par le navigateur.
+
+Pour assurer les déplacements, redimensionnements et répétitions en grille sur des motifs orientés, la fonction `newAxe`
+projette le déplacement de la souris dans le repère pivoté du motif. Cette logique géométrique reste indépendante du
+reste de l'application, ce qui préserve la lisibilité des écouteurs d'événements.
+
+Enfin, pour maintenir une exécution fluide sur les terminaux mobiles, les mouvements tactiles sont normalisés et filtrés
+par une fonction de limitation (_throttling_) afin d'éviter les recalculs superflus à chaque événement de survol ou de
+glissement.
+
+## Une architecture pilotée par la configuration
+
+Le constructeur `Configurateur($element, $form, styles)` prend en troisième paramètre un tableau `styles` : les motifs
+et les couleurs disponibles pour chacun des thèmes proposés au joueur. La logique de manipulation (déplacer,
+redimensionner, changer de couleur) ne connaît rien du contenu visuel, elle se contente de lire ce tableau. C'est ce qui
+permet de rejouer le même moteur pour plusieurs thèmes sans dupliquer une ligne de JavaScript.
+
+Le compromis : ce tableau `styles` n'arrive pas par un appel à une API JSON, il est généré côté serveur et injecté tel
+quel comme littéral JavaScript dans la vue qui sert la page, dans une application qui rendait tout côté serveur.
+Pragmatique pour l'époque, et exactement la frontière de données qu'une réécriture moderne remplacerait par un appel
+HTTP classique à une API.
+
+## Une chaîne de build structurée
+
+Le projet tournait déjà sur une chaîne de build complète, pilotée par un `Gruntfile.js` : `jshint` pour le lint,
+`concat` pour le bundling, avec un découpage du code réfléchi puisque le bundle lourd du configurateur (jQuery UI, le
+support tactile, le color picker et le fichier lui-même) n'était concaténé et chargé que sur la page de création, pas
+sur le reste du site. Vient ensuite `uglify` pour la minification, avec sourcemaps et un en-tête de version généré
+automatiquement, puis `imagemin` pour les images.
+
+La partie la plus intéressante concerne `svgstore` : la tâche compile tous les SVG du dossier des motifs en une seule
+feuille de sprites (`motifs.svg`), en préfixant chaque identifiant pour éviter les collisions. La bibliothèque de motifs
+dans laquelle pioche le configurateur est donc elle-même un artefact généré par le build, pas une collection de fichiers
+gérés à la main.
+
+Côté styles, le Sass est organisé en Atomic Design (`atoms`, `molecules`, `organisms`, `templates`), une méthodologie
+tout juste formalisée par Brad Frost en 2013. Compass sert pour générer des sprites CSS et calculer les dimensions des
+images directement dans les mixins :
+
+```scss
+.button--creer {
+  padding-left: compass-sprites-width("picto-creer") + 15px;
+  &:before {
+    content: "";
+    @include compass-sprites-item-centred-vertical("picto-creer");
+  }
+}
+```
+
+Le reste du dépôt d'origine contient aussi du code hors du périmètre du configurateur, notamment de la glue AJAX pour le
+vote et le carrousel, écrite par un autre développeur du projet.
+
+## Les erreurs de jeunesse et les compromis techniques
+
+Avec moins de trois ans d'expérience en développement front-end au moment de la création du projet, la relecture du code
+met aussi en évidence plusieurs pratiques désormais déconseillées.
+
+L'une des plus visibles concerne la modification des objets natifs. Le script étend `Array.prototype` à deux reprises
+pour simplifier la suppression d'éléments, avec une méthode `getIndex` qui réimplémente un `indexOf` pourtant déjà natif
+à l'époque :
+
+```js
+Array.prototype.getIndex = function (needle) {
+  for (var i = 0; i < this.length; i++) {
+    if (needle === this[i]) {
+      return i;
+    }
+  }
+  return -1;
+};
+
+Array.prototype.removeElement = function (needle) {
+  this.splice(this.getIndex(needle), 1);
+};
+```
+
+Cette approche expose le code à des risques de collision avec d'autres bibliothèques, perturbe l'itération standard sur
+les tableaux, et duplique une méthode qui existait déjà nativement.
+
+Une autre imperfection réside dans la gestion de la mémoire lors des interactions. Pendant le glisser-déposer, le
+gestionnaire attache un écouteur d'événement sur la fenêtre globale sans le détruire une fois le mouvement terminé :
+
+```js
+window.addEventListener("keydown", function (ev) {
+  if (ev.keyCode === 16) self.shiftPressed = true;
+});
+```
+
+Chaque manipulation rattachait un nouvel écouteur sur `window`, entraînant un empilement inutile en mémoire.
+
+Côté communication avec le serveur, développée avec un développeur back-end également junior, la transmission de la
+création s'effectuait en injectant l'arbre XML du SVG directement dans un champ de formulaire caché :
+
+```js
+$("#input_creation").val(serializeXmlChildsNode(this.$motifsZone.get(0)));
+```
+
+Ce choix permettait un traitement direct par le monolithe PHP, mais liait fortement la structure visuelle du DOM à la
+sauvegarde serveur, au lieu de s'appuyer sur une structure de données JSON normalisée.
+
+## Ce qu'il faut retenir
+
+- L'organisation par prototypes et l'encapsulation IIFE offraient une structure modulaire et lisible pour un fichier de
+  1730 lignes.
+- L'isolation du DOM SVG natif et des fonctions géométriques a permis d'éviter les limitations de compatibilité de
+  jQuery.
+- L'architecture pilotée par la configuration permettait de réutiliser le moteur sur plusieurs thèmes visuels sans
+  modifier le JavaScript.
+- La chaîne de build avec Grunt gérait déjà le découpage du code, l'optimisation des ressources et l'assemblage de
+  sprites SVG.
+- Les erreurs relevées (mutation de prototypes, écouteurs globaux non supprimés, sérialisation XML brute) illustrent les
+  limites de l'apprentissage sur le terrain et serviront de fil conducteur pour la réécriture en TypeScript.
