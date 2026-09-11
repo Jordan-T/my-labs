@@ -18,7 +18,7 @@
     "lint:css": "run-s lint:stylelint lint:breakpoints",
     "lint:stylelint": "stylelint \"src/**/*.{css,astro}\"",
     "lint:breakpoints": "node .ai/skills/breakpoints-check/check-custom-media.mjs",
-    "format": "prettier --write ."
+    "format": "prettier --write ./src --ignore-path .gitignore"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.0",
