@@ -1,6 +1,7 @@
 ---
 import { render } from "astro:content";
 import BaseLayout from "@/components/layout/BaseLayout.astro";
+import Button from "@/components/ui/Button.astro";
 import Section from "@/components/ui/Section.astro";
 import Tags from "@/components/ui/Tags.astro";
 import StatusBadge from "@/components/ui/StatusBadge.astro";
@@ -24,7 +25,7 @@ const { title, description, status, tags, github, external } = experiment.data;
     <article>
       <header class="head">
         <p class="meta">
-          <a class="up" href="/">← Labs</a>
+          <Button variant="back" href="/">Labs</Button>
           <StatusBadge status={status} />
         </p>
         <h1>{title}</h1>
@@ -70,7 +71,7 @@ const { title, description, status, tags, github, external } = experiment.data;
 
   .up {
     font-family: var(--font-mono);
-    font-size: 0.875rem;
+    font-size: var(--fs-small);
     color: var(--color-text-muted);
     transition: color var(--transition-base);
   }
@@ -82,7 +83,7 @@ const { title, description, status, tags, github, external } = experiment.data;
   .lede {
     margin: var(--space-md) 0;
     color: var(--color-text-muted);
-    font-size: 1.125rem;
+    font-size: var(--fs-lead);
   }
 
   .links {
@@ -94,7 +95,7 @@ const { title, description, status, tags, github, external } = experiment.data;
 
   .links a {
     font-family: var(--font-mono);
-    font-size: 0.875rem;
+    font-size: var(--fs-small);
     color: var(--color-accent);
   }
 
@@ -102,13 +103,13 @@ const { title, description, status, tags, github, external } = experiment.data;
   .prose :global(h2) {
     margin-top: var(--space-2xl);
     margin-bottom: var(--space-sm);
-    font-size: 1.5rem;
+    font-size: var(--fs-h2);
   }
 
   .prose :global(h3) {
     margin-top: var(--space-xl);
     margin-bottom: var(--space-xs);
-    font-size: 1.2rem;
+    font-size: var(--fs-h3);
   }
 
   .prose :global(p),
@@ -130,5 +131,15 @@ const { title, description, status, tags, github, external } = experiment.data;
     font-family: var(--font-mono);
     font-size: 0.9em;
     color: var(--color-accent2);
+  }
+
+  .prose :global(pre) {
+    margin: var(--space-md) calc(var(--space-md) * -1);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-md);
+  }
+
+  .prose :global(.content-block) {
+    margin-bottom: var(--space-md);
   }
 </style>

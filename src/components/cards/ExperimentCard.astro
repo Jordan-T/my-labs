@@ -15,16 +15,16 @@ const { title, description, status, tags, image } = experiment.data;
 
 <Surface as="a" href={`/experiments/${experiment.id}`} fill>
   {
-    /* image && (
+    image && (
       <div class="thumb" aria-hidden="true">
         <Image src={image} alt="" width={320} height={320} loading="lazy" />
       </div>
-    ) */
+    )
   }
   <article class="body">
     <header class="head">
       <h2 class="title">{title}</h2>
-      <StatusBadge status={status} />
+      {status !== "done" && <StatusBadge status={status} />}
     </header>
     <p class="desc">{description}</p>
     <Tags tags={tags} />
@@ -32,11 +32,12 @@ const { title, description, status, tags, image } = experiment.data;
 </Surface>
 
 <style>
-  /* Subtle visual hint: the image sits on the right edge, faded out toward the
-     content so it never competes with the text. */
   .thumb {
     position: absolute;
-    inset: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    max-width: 35%;
     z-index: 0;
     pointer-events: none;
   }
@@ -45,9 +46,9 @@ const { title, description, status, tags, image } = experiment.data;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: right center;
-    opacity: 0.4;
-    mask-image: linear-gradient(to right, transparent 30%, currentcolor 85%);
+    object-position: left center;
+    opacity: 0.3;
+    mask-image: linear-gradient(to right, transparent 0%, #000 100%);
   }
 
   .body {
@@ -56,15 +57,15 @@ const { title, description, status, tags, image } = experiment.data;
   }
 
   .head {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto;
     align-items: flex-start;
-    justify-content: space-between;
     gap: var(--space-sm);
     margin-bottom: var(--space-sm);
   }
 
   .title {
-    font-size: 1.25rem;
+    font-size: var(--fs-title);
   }
 
   .desc {
