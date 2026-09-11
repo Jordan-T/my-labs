@@ -16,6 +16,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: var(--header-height);
 }
 
 img,
@@ -60,6 +61,7 @@ button {
   --gutter: 3.75rem;
   --maxw: 73.75rem;
   --maxw-prose: 47.5rem;
+  --header-height: 4.75rem;
 
   /* Spacing scale */
   --space-2xs: 0.25rem;
@@ -72,13 +74,32 @@ button {
   --space-3xl: 3.5rem;
   --space-4xl: 5rem;
 
+  /* Type scale (5 steps + display via clamp) */
+  --fs-label: 0.75rem; /* 12px — uppercase labels / eyebrows / tags / badges */
+  --fs-small: 0.875rem; /* 14px — support / UI: nav, dates, buttons, dense lists */
+  --fs-body: 1rem; /* 16px — all reading text (unified body) */
+  --fs-lead: 1.125rem; /* 18px — intro / lead */
+  --fs-title: 1.25rem; /* 20px — card titles, roles */
+  --fs-h3: clamp(1rem, 3vw, 1.25rem);
+  --fs-h2: clamp(1.5rem, 4vw, 2rem);
+  --fs-h1: clamp(2rem, 6vw, 3.25rem);
+  --fs-hero: clamp(2.75rem, 7vw, 4.25rem);
+
+  /* Line-height scale */
+  --lh-solid: 1; /* hero title */
+  --lh-tight: 1.1; /* headings */
+  --lh-snug: 1.4; /* multi-line titles / cards */
+  --lh-normal: 1.6; /* body (default) */
+  --lh-relaxed: 1.8; /* long-form prose */
+
+  /* Letter-spacing scale */
+  --ls-cta: 0.06em; /* buttons */
+  --ls-label: 0.1em; /* labels / tags / overlines */
+  --ls-eyebrow: 0.18em; /* eyebrows */
+
   /* Motion */
   --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-/* Canonical breakpoints are defined once as custom media in src/styles/media.css
-   (--mq-compact 600px, --mq-ui 720px, --mq-grid 900px) and used via
-   @media (--mq-*). Never repeat a literal width in a @media. */
 
 /* ============================================================
    Base
@@ -87,7 +108,7 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-body);
-  line-height: 1.6;
+  line-height: var(--lh-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
@@ -104,23 +125,9 @@ main {
   outline-offset: 0.25rem;
 }
 
-@media (--mq-ui) {
+@media (--mq-until-md) {
   :root {
     --gutter: 1.5rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
   }
 }
 
@@ -131,53 +138,18 @@ main {
   background-repeat: repeat;
 }
 
-/* ============================================================
-   Example placeholder island (src/components/islands/ExampleDemo).
-   Islands have no scoped <style>; their structural styles live here
-   as utilities (see .ai/context/design-system.md). Token-only.
-   ============================================================ */
-.example-demo {
-  display: grid;
-  gap: var(--space-md);
-}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-surface-accent) var(--color-bg);
 
-.example-demo-track {
-  height: var(--space-sm);
-  overflow: hidden;
-  background: var(--color-surface-raised);
-  border: var(--border-width) solid var(--border-subtle);
-  border-radius: var(--radius-pill);
-}
-
-.example-demo-fill {
-  height: 100%;
-  width: calc(var(--fill, 0) * 100%);
-  background: var(--color-accent);
-  transition: width var(--transition-base);
-}
-
-.example-demo-controls {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-}
-
-.example-demo-value {
-  min-width: 2ch;
-  font-family: var(--font-mono);
-  color: var(--color-white);
-  text-align: center;
-}
-
-.example-demo button {
-  padding: var(--space-2xs) var(--space-md);
-  color: var(--color-accent);
-  background: transparent;
-  border: var(--border-width) solid var(--accent-edge);
-  border-radius: var(--radius-sm);
-  transition: background var(--transition-base);
-}
-
-.example-demo button:hover {
-  background: var(--accent-wash);
+  &::-webkit-scrollbar {
+    width: 13px;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--color-surface-accent);
+    border: 3px solid var(--color-bg);
+  }
 }
