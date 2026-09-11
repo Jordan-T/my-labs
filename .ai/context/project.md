@@ -40,9 +40,9 @@ These are constraints the code must keep satisfying, not aspirations.
 
 ## Status
 
-Pre-launch. The `noindex` robots meta (in `BaseLayout.astro`) and
-`public/robots.txt` `Disallow: /` are **intentional** — do not remove them
-without an explicit request to go to production.
+Live at labs.jordan-t.dev. The pre-launch `noindex` robots meta and
+`public/robots.txt` `Disallow: /` were removed once the site went to
+production.
 
 ## Where things live
 
