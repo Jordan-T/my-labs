@@ -1,7 +1,7 @@
 /** Single source of truth for site-wide info. Never hardcode these in markup. */
 
 export interface SocialLink {
-  label: string;
+  label: "GitHub" | "GitLab" | "LinkedIn";
   url: string;
 }
 
